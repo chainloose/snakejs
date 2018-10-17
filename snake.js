@@ -18,13 +18,18 @@ var snakeSpeed = 2;
 var appleColor = "#FF0000";
 var appleX = 0;
 var appleY = 0;
-//the fps for the game
-var fps = 30;
 
-SpawnApple();
-DrawApple();
-DrawSnake(snakeX, snakeY);
-
+function Init(){
+    ctx.clearRect(0, 0, 400, 400);
+    snakeX = 200;
+    snakeY = 200;
+    direction = "U";
+    SpawnApple();
+    DrawApple();
+    DrawSnake(snakeX, snakeY);
+}
+//starts or restarts the game
+Init();
 //draws the apple on a random position
 function SpawnApple()
 {
@@ -82,13 +87,27 @@ function Update() {
             direction = "R";
         }
 
+    }    
+
+    // restart when collision with boundaries
+    if(snakeX + snakeWidth > 400)
+    {
+        Init();
     }
-
-
-
+    else if(snakeY + snakeHeight > 400)
+    {
+        Init();
+    }
+    else if(snakeY < 0){
+        Init();
+    }
+    else if(snakeX < 0){
+        Init();
+    }
 }
 
 function Draw() {
+    //clears the tail behind the snake(needs reworking for the actual tail)
     ctx.clearRect(snakeX + snakeSpeed, snakeY + snakeSpeed, snakeWidth, snakeHeight);
     ctx.clearRect(snakeX - snakeSpeed, snakeY - snakeSpeed, snakeWidth, snakeHeight);
     ctx.clearRect(snakeX + snakeSpeed, snakeY - snakeSpeed, snakeWidth, snakeHeight);
