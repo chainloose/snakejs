@@ -1,0 +1,9 @@
+body {
+    background-color: grey;
+}
+
+#snakeCanvas {
+    background-color: white;
+    display: block;
+    margin: auto;
+}
