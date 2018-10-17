@@ -7,26 +7,34 @@ var ctx = canvas.getContext("2d");
 var snakeX = 200;
 var snakeY = 200;
 
-//snake size, color and speed.
+//snake properties.
 var snakeWidth = 20;
 var snakeHeight = 20;
 var snakeColor = "#228B22";
-var snakeSpeed = 10;
+var direction = "U";
+var snakeSpeed = 2;
 
-//apple color
+//apple properties 
 var appleColor = "#FF0000";
+var appleX = 0;
+var appleY = 0;
 //the fps for the game
 var fps = 30;
 
+SpawnApple();
 DrawApple();
 DrawSnake(snakeX, snakeY);
 
 //draws the apple on a random position
+function SpawnApple()
+{
+    appleX = Math.random() * (380 - 20) + 20;
+    appleY = Math.random() * (380 - 20) + 20;
+}
+
 function DrawApple() {
-    var randomX = Math.random() * (390 - 20) + 20;
-    var randomY = Math.random() * (390 - 20) + 20;
     ctx.fillStyle = appleColor;
-    ctx.fillRect(randomX, randomY, snakeWidth, snakeHeight);    
+    ctx.fillRect(appleX, appleY, snakeWidth, snakeHeight);    
 }
 
 // draws the snake
@@ -36,21 +44,55 @@ function DrawSnake(x, y) {
 }
 
 function Update() {
-    
+    switch(direction){
+        case "U":
+        snakeY -= snakeSpeed;
+        break;
+
+        case "D":
+        snakeY += snakeSpeed;
+        break;
+
+        case "L":
+        snakeX -= snakeSpeed;
+        break;
+
+        case "R":
+        snakeX += snakeSpeed;
+        break;
+
+        default:
+        break;
+    }
+
     document.onkeydown = checkKey;
 
     function checkKey(e) {
-
         e = e || window.event;
-
-        if(e.keyCode == '87') {
-            snakeY -= snakeSpeed;
+        if(e.keyCode == '87'){
+            direction = "U";
         }
+        else if(e.keyCode == '83'){
+            direction = "D";
+        }
+        else if(e.keyCode == '65'){
+            direction = "L";
+        }
+        else if(e.keyCode == '68'){
+            direction = "R";
+        }
+
     }
+
+
+
 }
 
 function Draw() {
-    ctx.clearRect(snakeX, snakeY + snakeSpeed, snakeWidth, snakeHeight);
+    ctx.clearRect(snakeX + snakeSpeed, snakeY + snakeSpeed, snakeWidth, snakeHeight);
+    ctx.clearRect(snakeX - snakeSpeed, snakeY - snakeSpeed, snakeWidth, snakeHeight);
+    ctx.clearRect(snakeX + snakeSpeed, snakeY - snakeSpeed, snakeWidth, snakeHeight);
+    ctx.clearRect(snakeX - snakeSpeed, snakeY + snakeSpeed, snakeWidth, snakeHeight);
     ctx.fillStyle = snakeColor;
     ctx.fillRect(snakeX, snakeY, snakeWidth, snakeHeight);
 }
