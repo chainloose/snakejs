@@ -8,7 +8,7 @@ var snake = {
     height: 20,
     color: "#228B22",
     direction: "U",
-    speed: 2,
+    speed: 20,
     x: 200,
     y: 200
 };
@@ -48,41 +48,41 @@ function DrawSnake(x, y) {
 }
 
 function Update() {
-    switch(direction){
+    switch(snake.direction){
         case "U":
-        snake.y -= snake.speed;
-        break;
+            snake.y -= snake.speed;
+            break;
 
         case "D":
-        snake.y += snake.speed;
-        break;
+            snake.y += snake.speed;
+            break;
 
         case "L":
-        snake.x -= snake.speed;
-        break;
+            snake.x -= snake.speed;
+            break;
 
         case "R":
-        snake.x += snake.speed;
-        break;
+            snake.x += snake.speed;
+            break;
 
         default:
-        break;
+            break;
     }
 
     document.onkeydown = checkKey;
 
     function checkKey(e) {
         e = e || window.event;
-        if(e.keyCode == '87'){
+        if(e.keyCode == '87' && snake.direction != "D"){
             snake.direction = "U";
         }
-        else if(e.keyCode == '83'){
+        else if(e.keyCode == '83' && snake.direction != "U"){
             snake.direction = "D";
         }
-        else if(e.keyCode == '65'){
+        else if(e.keyCode == '65' && snake.direction != "R"){
             snake.direction = "L";
         }
-        else if(e.keyCode == '68'){
+        else if(e.keyCode == '68' && snake.direction != "L"){
             snake.direction = "R";
         }
 
@@ -119,13 +119,14 @@ function Draw() {
     ctx.fillRect(snake.x, snake.y, snake.width, snake.height);
 }
 
-function GameLoop(){
+
+//Gameloop
+window.setInterval(function(){
     Update();
     Draw();
-    window.requestAnimationFrame(GameLoop);
-}
+    /// call your function here
+  }, 90);
 
-window.requestAnimationFrame(GameLoop);
 
   
 
