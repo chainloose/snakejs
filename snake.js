@@ -10,7 +10,8 @@ var snake = {
     direction: "U",
     speed: 20,
     x: 200,
-    y: 200
+    y: 200,
+    taillength: 0
 };
 var apple = {
     color: "#FF0000",
@@ -112,11 +113,22 @@ function Update() {
 }
 
 function Draw() {
-    //clears the tail behind the snake(needs reworking for the actual tail)
-    ctx.clearRect(snake.x + snake.speed, snake.y + snake.speed, snake.width, snake.height);
-    ctx.clearRect(snake.x - snake.speed, snake.y - snake.speed, snake.width, snake.height);
-    ctx.clearRect(snake.x + snake.speed, snake.y - snake.speed, snake.width, snake.height);
-    ctx.clearRect(snake.x - snake.speed, snake.y + snake.speed, snake.width, snake.height);
+    //clears the tail behind the snake if it has no points yet
+    if(snake.direction == "U" && snake.taillength == 0) {
+        ctx.clearRect(snake.x, snake.y + snake.speed, snake.width, snake.height);
+    }
+    else if (snake.direction == "D" && snake.taillength == 0) {
+        ctx.clearRect(snake.x, snake.y - snake.speed, snake.width, snake.height);
+    }
+    else if (snake.direction == "L" && snake.taillength == 0) {
+        ctx.clearRect(snake.x + snake.speed, snake.y, snake.width, snake.height);
+    }
+    else if (snake.direction == "R" && snake.taillength == 0) {
+        ctx.clearRect(snake.x - snake.speed, snake.y, snake.width, snake.height);
+    }
+
+
+    // draw the snake
     ctx.fillStyle = snake.color;
     ctx.fillRect(snake.x, snake.y, snake.width, snake.height);
 }
