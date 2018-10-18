@@ -3,67 +3,66 @@
 var canvas = document.getElementById("snakeCanvas");
 var ctx = canvas.getContext("2d");
 
-//snake's position
-var snakeX = 200;
-var snakeY = 200;
-
-//snake properties.
-var snakeWidth = 20;
-var snakeHeight = 20;
-var snakeColor = "#228B22";
-var direction = "U";
-var snakeSpeed = 2;
-
-//apple properties 
-var appleColor = "#FF0000";
-var appleX = 0;
-var appleY = 0;
+var snake = {
+    width: 20,
+    height: 20,
+    color: "#228B22",
+    direction: "U",
+    speed: 2,
+    x: 200,
+    y: 200
+};
+var apple = {
+    color: "#FF0000",
+    x: 0,
+    y: 0
+};
 
 function Init(){
     ctx.clearRect(0, 0, 400, 400);
-    snakeX = 200;
-    snakeY = 200;
-    direction = "U";
+    snake.x = 200;
+    snake.y = 200;
+    snake.direction = "U";
     SpawnApple();
     DrawApple();
-    DrawSnake(snakeX, snakeY);
+    DrawSnake(snake.x, snake.y);
 }
 //starts or restarts the game
 Init();
 //draws the apple on a random position
 function SpawnApple()
 {
-    appleX = Math.random() * (380 - 20) + 20;
-    appleY = Math.random() * (380 - 20) + 20;
+    apple.x = Math.random() * (380 - 20) + 20;
+    apple.y = Math.random() * (380 - 20) + 20;
 }
 
 function DrawApple() {
-    ctx.fillStyle = appleColor;
-    ctx.fillRect(appleX, appleY, snakeWidth, snakeHeight);    
+    ctx.fillStyle = apple.color;
+    ctx.fillRect(apple.x, apple.y, snake.width, snake.height);    
 }
 
 // draws the snake
 function DrawSnake(x, y) {
-    ctx.fillStyle = snakeColor;
-    ctx.fillRect(x, y, snakeWidth, snakeHeight);
+    ctx.fillStyle = snake.color;
+    ctx.fillRect(x, y, snake.width, snake.height);
 }
 
 function Update() {
     switch(direction){
         case "U":
-        snakeY -= snakeSpeed;
+        snake.y -= snake.speed;
         break;
 
         case "D":
-        snakeY += snakeSpeed;
+        snake.y += snake.speed;
         break;
 
         case "L":
-        snakeX -= snakeSpeed;
+        snake.x -= snake.speed;
         break;
 
         case "R":
-        snakeX += snakeSpeed;
+        snake.x += snake.speed;
         break;
 
         default:
@@ -75,45 +74,49 @@ function Update() {
     function checkKey(e) {
         e = e || window.event;
         if(e.keyCode == '87'){
-            direction = "U";
+            snake.direction = "U";
         }
         else if(e.keyCode == '83'){
-            direction = "D";
+            snake.direction = "D";
         }
         else if(e.keyCode == '65'){
-            direction = "L";
+            snake.direction = "L";
         }
         else if(e.keyCode == '68'){
-            direction = "R";
+            snake.direction = "R";
         }
 
     }    
 
     // restart when collision with boundaries
-    if(snakeX + snakeWidth > 400)
+    if(snake.x + snake.width > 400)
     {
         Init();
     }
-    else if(snakeY + snakeHeight > 400)
+    else if(snake.y + snake.height > 400)
     {
         Init();
     }
-    else if(snakeY < 0){
+    else if(snake.y < 0){
         Init();
     }
-    else if(snakeX < 0){
+    else if(snake.x < 0){
         Init();
     }
+
+    // if(snake.y < appleY - snake.height && ){
+    //     console.log("collision");
+    // }
 }
 
 function Draw() {
     //clears the tail behind the snake(needs reworking for the actual tail)
-    ctx.clearRect(snakeX + snakeSpeed, snakeY + snakeSpeed, snakeWidth, snakeHeight);
-    ctx.clearRect(snakeX - snakeSpeed, snakeY - snakeSpeed, snakeWidth, snakeHeight);
-    ctx.clearRect(snakeX + snakeSpeed, snakeY - snakeSpeed, snakeWidth, snakeHeight);
-    ctx.clearRect(snakeX - snakeSpeed, snakeY + snakeSpeed, snakeWidth, snakeHeight);
-    ctx.fillStyle = snakeColor;
-    ctx.fillRect(snakeX, snakeY, snakeWidth, snakeHeight);
+    ctx.clearRect(snake.x + snake.speed, snake.y + snake.speed, snake.width, snake.height);
+    ctx.clearRect(snake.x - snake.speed, snake.y - snake.speed, snake.width, snake.height);
+    ctx.clearRect(snake.x + snake.speed, snake.y - snake.speed, snake.width, snake.height);
+    ctx.clearRect(snake.x - snake.speed, snake.y + snake.speed, snake.width, snake.height);
+    ctx.fillStyle = snake.color;
+    ctx.fillRect(snake.x, snake.y, snake.width, snake.height);
 }
 
 function GameLoop(){
