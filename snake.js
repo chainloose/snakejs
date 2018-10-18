@@ -32,8 +32,10 @@ Init();
 //draws the apple on a random position
 function SpawnApple()
 {
-    apple.x = Math.random() * (380 - 20) + 20;
-    apple.y = Math.random() * (380 - 20) + 20;
+    var baseRandomX = Math.floor(Math.random() * (19.99 - 1) + 1);
+    var baseRandomY = Math.floor(Math.random() * (19.99 - 1) + 1);
+    apple.x = baseRandomX * 20;
+    apple.y = baseRandomY * 20;
 }
 
 function DrawApple() {
