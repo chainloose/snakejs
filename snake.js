@@ -16,7 +16,9 @@ var snake = {
 var apple = {
     color: "#FF0000",
     x: 0,
-    y: 0
+    y: 0,
+    height: 20,
+    width: 20
 };
 
 function Init(){
@@ -35,13 +37,13 @@ function SpawnApple()
 {
     var baseRandomX = Math.floor(Math.random() * (19.99 - 1) + 1);
     var baseRandomY = Math.floor(Math.random() * (19.99 - 1) + 1);
-    apple.x = baseRandomX * 20;
-    apple.y = baseRandomY * 20;
+    apple.x = baseRandomX * apple.width;
+    apple.y = baseRandomY * apple.height;
 }
 
 function DrawApple() {
     ctx.fillStyle = apple.color;
-    ctx.fillRect(apple.x, apple.y, snake.width, snake.height);    
+    ctx.fillRect(apple.x, apple.y, apple.width, apple.height);    
 }
 
 // draws the snake
@@ -107,9 +109,10 @@ function Update() {
         Init();
     }
 
-    // if(snake.y < appleY - snake.height && ){
-    //     console.log("collision");
-    // }
+    if(snake.y == apple.y && snake.x == apple.x){
+        SpawnApple();
+        DrawApple();
+    }
 }
 
 function Draw() {
