@@ -11,7 +11,7 @@ var snake = {
     speed: 20,
     x: 200,
     y: 200,
-    taillength: 0
+    taillength: 1
 };
 var apple = {
     color: "#FF0000",
@@ -23,11 +23,11 @@ var apple = {
 
 function Init(){
     ctx.clearRect(0, 0, 400, 400);
+    snake.taillength = 1;
     snake.x = 200;
     snake.y = 200;
     snake.direction = "U";
     SpawnApple();
-    DrawApple();
     DrawSnake(snake.x, snake.y);
 }
 //starts or restarts the game
@@ -39,11 +39,8 @@ function SpawnApple()
     var baseRandomY = Math.floor(Math.random() * (19.99 - 1) + 1);
     apple.x = baseRandomX * apple.width;
     apple.y = baseRandomY * apple.height;
-}
-
-function DrawApple() {
     ctx.fillStyle = apple.color;
-    ctx.fillRect(apple.x, apple.y, apple.width, apple.height);    
+    ctx.fillRect(apple.x, apple.y, apple.width, apple.height); 
 }
 
 // draws the snake
@@ -111,23 +108,23 @@ function Update() {
 
     if(snake.y == apple.y && snake.x == apple.x){
         SpawnApple();
-        DrawApple();
+        snake.taillength += 1;
     }
 }
 
 function Draw() {
     //clears the tail behind the snake if it has no points yet
-    if(snake.direction == "U" && snake.taillength == 0) {
-        ctx.clearRect(snake.x, snake.y + snake.speed, snake.width, snake.height);
+    if(snake.direction == "U") {
+        ctx.clearRect(snake.x, snake.y + snake.speed * snake.taillength, snake.width, snake.height);
     }
-    else if (snake.direction == "D" && snake.taillength == 0) {
-        ctx.clearRect(snake.x, snake.y - snake.speed, snake.width, snake.height);
+    else if (snake.direction == "D") {
+        ctx.clearRect(snake.x, snake.y - snake.speed * snake.taillength, snake.width, snake.height);
     }
-    else if (snake.direction == "L" && snake.taillength == 0) {
-        ctx.clearRect(snake.x + snake.speed, snake.y, snake.width, snake.height);
+    else if (snake.direction == "L") {
+        ctx.clearRect(snake.x + snake.speed * snake.taillength, snake.y, snake.width, snake.height);
     }
-    else if (snake.direction == "R" && snake.taillength == 0) {
-        ctx.clearRect(snake.x - snake.speed, snake.y, snake.width, snake.height);
+    else if (snake.direction == "R") {
+        ctx.clearRect(snake.x - snake.speed * snake.taillength, snake.y, snake.width, snake.height);
     }
 
 
