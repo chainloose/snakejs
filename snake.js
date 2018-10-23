@@ -8,6 +8,9 @@ var snake = {
     height: 20,
     color: "#228B22",
     direction: "U",
+    previousDirection: "U",
+    previousOrientationX: 0,
+    previousOrientationY: 0,
     speed: 20,
     x: 200,
     y: 200,
@@ -30,8 +33,10 @@ function Init(){
     SpawnApple();
     DrawSnake(snake.x, snake.y);
 }
+
 //starts or restarts the game
 Init();
+
 //draws the apple on a random position
 function SpawnApple()
 {
@@ -47,6 +52,12 @@ function SpawnApple()
 function DrawSnake(x, y) {
     ctx.fillStyle = snake.color;
     ctx.fillRect(x, y, snake.width, snake.height);
+}
+
+function SetPreviousOrientation() {
+    snake.previousDirection = snake.direction;
+    snake.previousOrientationX = snake.x;
+    snake.previousOrientationY = snake.y;
 }
 
 function Update() {
@@ -76,18 +87,22 @@ function Update() {
     function checkKey(e) {
         e = e || window.event;
         if(e.keyCode == '87' && snake.direction != "D"){
+
+            SetPreviousOrientation();
             snake.direction = "U";
         }
         else if(e.keyCode == '83' && snake.direction != "U"){
+            SetPreviousOrientation();
             snake.direction = "D";
         }
         else if(e.keyCode == '65' && snake.direction != "R"){
+            SetPreviousOrientation();
             snake.direction = "L";
         }
         else if(e.keyCode == '68' && snake.direction != "L"){
+            SetPreviousOrientation();
             snake.direction = "R";
         }
-
     }    
 
     // restart when collision with boundaries
@@ -113,7 +128,7 @@ function Update() {
 }
 
 function Draw() {
-    //clears the tail behind the snake if it has no points yet
+    //clears the tail behind the snake
     if(snake.direction == "U") {
         ctx.clearRect(snake.x, snake.y + snake.speed * snake.taillength, snake.width, snake.height);
     }
@@ -127,18 +142,37 @@ function Draw() {
         ctx.clearRect(snake.x - snake.speed * snake.taillength, snake.y, snake.width, snake.height);
     }
 
+    switch(snake.previousDirection)
+    {
+        case "U":
+            ctx.clearRect(snake.previousOrientationX, snake.previousOrientationY, snake.width, snake.height * snake.taillength);
+            break;
 
+        case "D":
+            ctx.clearRect(snake.previousOrientationX, snake.previousOrientationY, snake.width, -snake.height * snake.taillength); 
+            break;
+        
+        case "L":
+            ctx.clearRect(snake.previousOrientationX, snake.previousOrientationY, snake.width * snake.taillength, snake.height);
+            break;
+        
+        case "R":
+            ctx.clearRect(snake.previousOrientationX, snake.previousOrientationY, -snake.width * snake.taillength, snake.height);
+            break;
+        
+        default:
+            break;
+    }
+    
     // draw the snake
     ctx.fillStyle = snake.color;
     ctx.fillRect(snake.x, snake.y, snake.width, snake.height);
 }
 
-
 //Gameloop
 window.setInterval(function(){
     Update();
     Draw();
-    /// call your function here
   }, 90);
 
 
